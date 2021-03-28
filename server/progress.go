@@ -27,7 +27,7 @@ func (pg *Progress) Write(p []byte) (int, error) {
 	defer pg.mux.Unlock()
 
 	if pg.Canceled {
-		return 0, fmt.Errorf("%s: canceled\n", pg.Name)
+		return 0, fmt.Errorf("canceled: %s", pg.Name)
 	}
 
 	n := len(p)
