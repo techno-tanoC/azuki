@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"os"
@@ -36,9 +37,16 @@ func (lc *LockCopy) Copy(r io.Reader, name string, ext string) error {
 		return xerrors.Errorf("failed to create file( name: %s, ext: %s ): %w", name, ext, err)
 	}
 
-	_, err = io.Copy(f, r)
+	bufWriter := bufio.NewWriter(f)
+	bufReader := bufio.NewReader(r)
+	_, err = io.Copy(bufWriter, bufReader)
 	if err != nil {
 		return xerrors.Errorf("failed to copy file( name: %s, ext: %s ): %w", name, ext, err)
+	}
+
+	err = bufWriter.Flush()
+	if err != nil {
+		return xerrors.Errorf("failed to flush write( name: %s, ext: %s ): %w", name, ext, err)
 	}
 
 	err = os.Chown(f.Name(), lc.uid, lc.gid)
