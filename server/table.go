@@ -6,18 +6,18 @@ import (
 
 type Table struct {
 	mux   sync.Mutex
-	table map[string]*Progress
+	table map[string]IntoItem
 	keys  []string
 }
 
 func NewTable() *Table {
 	return &Table{
-		table: map[string]*Progress{},
+		table: map[string]IntoItem{},
 		keys:  []string{},
 	}
 }
 
-func (t *Table) Add(key string, pg *Progress) {
+func (t *Table) Add(key string, pg IntoItem) {
 	t.mux.Lock()
 	defer t.mux.Unlock()
 
@@ -39,4 +39,16 @@ func (t *Table) Delete(key string) {
 			}
 		}
 	}
+}
+
+func (t *Table) ToItems() []Item {
+	t.mux.Lock()
+	defer t.mux.Unlock()
+
+	var items []Item
+	for _, k := range t.keys {
+		item := t.table[k].ToItem(k)
+		items = append(items, item)
+	}
+	return items
 }
