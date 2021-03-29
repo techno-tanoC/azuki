@@ -19,11 +19,13 @@ type Downloader struct {
 
 func NewDownloader(dir string, uid int, gid int) *Downloader {
 	dialer := &net.Dialer{
-		Timeout: 10 * time.Second,
+		Timeout: 3 * time.Second,
 	}
 	client := &http.Client{
 		Transport: &http.Transport{
-			Dial: dialer.Dial,
+			Dial:                  dialer.Dial,
+			TLSHandshakeTimeout:   3 * time.Second,
+			ResponseHeaderTimeout: 3 * time.Second,
 		},
 	}
 	lockCopy := NewLockCopy(dir, uid, gid)
