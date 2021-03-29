@@ -8,6 +8,7 @@ type Item struct {
 	Canceled bool   `json:"canceled"`
 }
 
-type IntoItem interface {
+type ProgressLike interface {
 	ToItem(string) Item
+	Cancel()
 }
