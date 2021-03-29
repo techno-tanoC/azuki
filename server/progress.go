@@ -5,33 +5,28 @@ import (
 	"sync"
 )
 
-type Item struct {
-	Name     string `json:"name"`
-	Total    int64  `json:"total"`
-	Size     int64  `json:"size"`
-	Canceled bool   `json:"canceled"`
-}
-
 type Progress struct {
-	mux sync.Mutex
-	Item
+	mux      sync.Mutex
+	name     string
+	total    int64
+	size     int64
+	canceled bool
 }
 
 func NewProgress(name string) *Progress {
-	item := Item{Name: name}
-	return &Progress{Item: item}
+	return &Progress{name: name}
 }
 
 func (pg *Progress) Write(p []byte) (int, error) {
 	pg.mux.Lock()
 	defer pg.mux.Unlock()
 
-	if pg.Canceled {
-		return 0, fmt.Errorf("canceled: %s", pg.Name)
+	if pg.canceled {
+		return 0, fmt.Errorf("canceled: %s", pg.name)
 	}
 
 	n := len(p)
-	pg.Size += int64(n)
+	pg.size += int64(n)
 	return n, nil
 }
 
@@ -39,7 +34,7 @@ func (pg *Progress) SetName(name string) {
 	pg.mux.Lock()
 	defer pg.mux.Unlock()
 
-	pg.Name = name
+	pg.name = name
 }
 
 func (pg *Progress) SetTotal(total int64) {
@@ -47,9 +42,9 @@ func (pg *Progress) SetTotal(total int64) {
 	defer pg.mux.Unlock()
 
 	if total > 0 {
-		pg.Total = total
+		pg.total = total
 	} else {
-		pg.Total = 0
+		pg.total = 0
 	}
 }
 
@@ -57,12 +52,18 @@ func (pg *Progress) Cancel() {
 	pg.mux.Lock()
 	defer pg.mux.Unlock()
 
-	pg.Canceled = true
+	pg.canceled = true
 }
 
-func (pg *Progress) ToItem() Item {
+func (pg *Progress) ToItem(key string) Item {
 	pg.mux.Lock()
 	defer pg.mux.Unlock()
 
-	return pg.Item
+	return Item{
+		ID:       key,
+		Name:     pg.name,
+		Total:    pg.total,
+		Size:     pg.size,
+		Canceled: pg.canceled,
+	}
 }
