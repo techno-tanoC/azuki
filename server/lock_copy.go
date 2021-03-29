@@ -50,9 +50,9 @@ func (lc *LockCopy) Copy(r io.ReadSeeker, name string, ext string) error {
 
 func buildFreshName(dir string, name string, ext string) string {
 	var (
-		fresh string
-		count int
-		base  string
+		candidate string
+		count     int
+		base      string
 	)
 
 	for {
@@ -62,13 +62,13 @@ func buildFreshName(dir string, name string, ext string) string {
 			base = fmt.Sprintf("%s(%d).%s", name, count, ext)
 		}
 
-		fresh = filepath.Join(dir, base)
-		if _, err := os.Stat(fresh); err != nil {
+		candidate = filepath.Join(dir, base)
+		if _, err := os.Stat(candidate); err != nil {
 			break
 		} else {
-			count += 1
+			count++
 		}
 	}
 
-	return fresh
+	return candidate
 }
