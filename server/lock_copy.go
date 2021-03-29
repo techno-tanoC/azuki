@@ -32,7 +32,7 @@ func (lc *LockCopy) Copy(r io.ReadSeeker, name string, ext string) error {
 		return err
 	}
 
-	fresh := buildFreshName(lc.dir, name, ext)
+	fresh := lc.buildFreshName(name, ext)
 
 	f, err := os.Create(fresh)
 	if err != nil {
@@ -48,7 +48,7 @@ func (lc *LockCopy) Copy(r io.ReadSeeker, name string, ext string) error {
 	return err
 }
 
-func buildFreshName(dir string, name string, ext string) string {
+func (lc *LockCopy) buildFreshName(name string, ext string) string {
 	var (
 		candidate string
 		count     int
@@ -62,7 +62,7 @@ func buildFreshName(dir string, name string, ext string) string {
 			base = fmt.Sprintf("%s(%d).%s", name, count, ext)
 		}
 
-		candidate = filepath.Join(dir, base)
+		candidate = filepath.Join(lc.dir, base)
 		if _, err := os.Stat(candidate); err != nil {
 			break
 		} else {
