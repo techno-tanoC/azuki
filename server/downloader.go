@@ -43,13 +43,14 @@ func (d *Downloader) Download(url string, name string, ext string) error {
 	pg := NewProgress(name)
 
 	// Register pg( defer unregister )
-	uuid, err := uuid.NewRandom()
+	v4, err := uuid.NewRandom()
 	if err != nil {
 		return err
 	}
+	uuid := v4.String()
 
-	d.table.Add(uuid.String(), pg)
-	defer d.table.Delete(uuid.String())
+	d.table.Add(uuid, pg)
+	defer d.table.Delete(uuid)
 
 	// Make temp file( defer delete)
 	temp, err := ioutil.TempFile("", "")
