@@ -3,31 +3,18 @@ package main
 import (
 	"io"
 	"io/ioutil"
-	"net"
-	"net/http"
 	"os"
-	"time"
 
 	"github.com/google/uuid"
 )
 
 type Downloader struct {
-	client   *http.Client
+	client   ClientLike
 	lockCopy *LockCopy
 	table    *Table
 }
 
-func NewDownloader(dir string, uid int, gid int) *Downloader {
-	dialer := &net.Dialer{
-		Timeout: 3 * time.Second,
-	}
-	client := &http.Client{
-		Transport: &http.Transport{
-			Dial:                  dialer.Dial,
-			TLSHandshakeTimeout:   3 * time.Second,
-			ResponseHeaderTimeout: 3 * time.Second,
-		},
-	}
+func NewDownloader(client ClientLike, dir string, uid int, gid int) *Downloader {
 	lockCopy := NewLockCopy(dir, uid, gid)
 	table := NewTable()
 
@@ -65,16 +52,17 @@ func (d *Downloader) Download(url string, name string, ext string) error {
 	if err != nil {
 		return err
 	}
-	defer res.Body.Close()
+	body := res.Body()
+	defer body.Close()
 
 	// Set ContentLength
-	pg.SetTotal(res.ContentLength)
+	pg.SetTotal(res.ContentLength())
 
 	// Make MultiWriter
 	tempPg := io.MultiWriter(temp, pg)
 
 	// Copy data from response to temp file
-	_, err = io.Copy(tempPg, res.Body)
+	_, err = io.Copy(tempPg, body)
 	if err != nil {
 		return err
 	}
