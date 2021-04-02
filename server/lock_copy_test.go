@@ -2,18 +2,22 @@ package main
 
 import (
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestBuildFreshName(t *testing.T) {
 	lc := NewLockCopy(".", 1000, 1000)
 
 	fresh := lc.buildFreshName("go", "mod")
-	if fresh != "go(1).mod" {
-		t.Errorf("buildFreshName: expect go(1).mod, actual %v", fresh)
+	diff := cmp.Diff(fresh, "go(1).mod")
+	if diff != "" {
+		t.Errorf("TestBuildFreshName: (-got +want)\n%s", diff)
 	}
 
 	fresh = lc.buildFreshName("unknown", "mod")
-	if fresh != "unknown.mod" {
-		t.Errorf("buildFreshName: expect unknown.mod, actual %v", fresh)
+	diff = cmp.Diff(fresh, "unknown.mod")
+	if diff != "" {
+		t.Errorf("TestBuildFreshName2: (-got +want)\n%s", diff)
 	}
 }
