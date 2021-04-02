@@ -30,13 +30,6 @@ func (pg *Progress) Write(p []byte) (int, error) {
 	return n, nil
 }
 
-func (pg *Progress) SetName(name string) {
-	pg.mux.Lock()
-	defer pg.mux.Unlock()
-
-	pg.name = name
-}
-
 func (pg *Progress) SetTotal(total int64) {
 	pg.mux.Lock()
 	defer pg.mux.Unlock()
