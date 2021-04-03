@@ -52,8 +52,7 @@ func (d *Downloader) Download(url string, name string, ext string) error {
 	if err != nil {
 		return err
 	}
-	body := res.Body()
-	defer body.Close()
+	defer res.Close()
 
 	// Set ContentLength
 	pg.SetTotal(res.ContentLength())
@@ -62,7 +61,7 @@ func (d *Downloader) Download(url string, name string, ext string) error {
 	tempPg := io.MultiWriter(temp, pg)
 
 	// Copy data from response to temp file
-	_, err = io.Copy(tempPg, body)
+	_, err = io.Copy(tempPg, res)
 	if err != nil {
 		return err
 	}
