@@ -4,6 +4,11 @@ import (
 	"sync"
 )
 
+type ProgressLike interface {
+	ToItem(string) Item
+	Cancel()
+}
+
 type Table struct {
 	mux   sync.Mutex
 	table map[string]ProgressLike

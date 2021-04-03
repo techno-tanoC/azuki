@@ -7,8 +7,3 @@ type Item struct {
 	Size     int64  `json:"size"`
 	Canceled bool   `json:"canceled"`
 }
-
-type ProgressLike interface {
-	ToItem(string) Item
-	Cancel()
-}
