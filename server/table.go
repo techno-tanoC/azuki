@@ -50,7 +50,7 @@ func (t *Table) ToItems() []Item {
 	t.mux.Lock()
 	defer t.mux.Unlock()
 
-	var items []Item
+	items := make([]Item, 0)
 	for _, k := range t.keys {
 		item := t.table[k].ToItem(k)
 		items = append(items, item)
