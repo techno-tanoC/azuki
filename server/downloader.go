@@ -66,6 +66,12 @@ func (d *Downloader) Download(url string, name string, ext string) error {
 		return err
 	}
 
+	//
+	_, err = temp.Seek(0, io.SeekStart)
+	if err != nil {
+		return err
+	}
+
 	// Copy data from temp file to file
 	err = d.lockCopy.Copy(temp, name, ext)
 	if err != nil {

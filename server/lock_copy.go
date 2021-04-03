@@ -23,14 +23,9 @@ func NewLockCopy(dir string, uid int, gid int) *LockCopy {
 	}
 }
 
-func (lc *LockCopy) Copy(r io.ReadSeeker, name string, ext string) error {
+func (lc *LockCopy) Copy(r io.Reader, name string, ext string) error {
 	lc.mux.Lock()
 	defer lc.mux.Unlock()
-
-	_, err := r.Seek(0, io.SeekStart)
-	if err != nil {
-		return err
-	}
 
 	fresh := lc.buildFreshName(name, ext)
 
