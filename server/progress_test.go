@@ -27,17 +27,17 @@ func TestWrite(t *testing.T) {
 
 	diff := cmp.Diff(pg.size, int64(len(bytes)))
 	if diff != "" {
-		t.Errorf("TestWrite2: (-got +want)\n%s", diff)
+		t.Errorf("\n%s", diff)
 	}
 
 	_, err = pg.Write(bytes)
 	if err != nil {
-		t.Errorf("TestWrite3: err %v", err)
+		t.Errorf("TestWrite: err %v", err)
 	}
 
 	diff = cmp.Diff(pg.size, 2*int64(len(bytes)))
 	if diff != "" {
-		t.Errorf("TestWrite2: (-got +want)\n%s", diff)
+		t.Errorf("\n%s", diff)
 	}
 }
 
@@ -47,13 +47,13 @@ func TestSetTotal(t *testing.T) {
 	pg.SetTotal(100)
 	diff := cmp.Diff(pg.total, int64(100))
 	if diff != "" {
-		t.Errorf("TestSeTotal: (-got +want)\n%s", diff)
+		t.Errorf("\n%s", diff)
 	}
 
 	pg.SetTotal(1000)
 	diff = cmp.Diff(pg.total, int64(1000))
 	if diff != "" {
-		t.Errorf("TestSetTotal2: (-got +want)\n%s", diff)
+		t.Errorf("\n%s", diff)
 	}
 }
 
@@ -61,14 +61,14 @@ func TestCancel(t *testing.T) {
 	pg := NewProgress("test")
 	diff := cmp.Diff(pg.canceled, false)
 	if diff != "" {
-		t.Errorf("TestCancel2: (-got +want)\n%s", diff)
+		t.Errorf("\n%s", diff)
 	}
 
 	pg.Cancel()
 
 	diff = cmp.Diff(pg.canceled, true)
 	if diff != "" {
-		t.Errorf("TestCancel2: (-got +want)\n%s", diff)
+		t.Errorf("\n%s", diff)
 	}
 }
 
@@ -85,6 +85,6 @@ func TestToItem(t *testing.T) {
 
 	diff := cmp.Diff(item, expected)
 	if diff != "" {
-		t.Errorf("TestToItem: (-got +want)\n%s", diff)
+		t.Errorf("\n%s", diff)
 	}
 }
