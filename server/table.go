@@ -4,25 +4,20 @@ import (
 	"sync"
 )
 
-type ProgressLike interface {
-	ToItem(string) Item
-	Cancel()
-}
-
 type Table struct {
 	mux   sync.Mutex
-	table map[string]ProgressLike
+	table map[string]*Progress
 	keys  []string
 }
 
 func NewTable() *Table {
 	return &Table{
-		table: map[string]ProgressLike{},
+		table: map[string]*Progress{},
 		keys:  []string{},
 	}
 }
 
-func (t *Table) Add(key string, pg ProgressLike) {
+func (t *Table) Add(key string, pg *Progress) {
 	t.mux.Lock()
 	defer t.mux.Unlock()
 
