@@ -24,22 +24,51 @@ func TestNewTable(t *testing.T) {
 
 func TestAddDelete(t *testing.T) {
 	table := NewTable()
-	key := "key"
-	pg := NewProgress("test")
 	opt1, opt2 := progressCmpOpt()
 
-	table.Add("key", pg)
+	key := "key"
+	pg := NewProgress("test")
+	key2 := "key2"
+	pg2 := NewProgress("test2")
+
+	// Add key pg
+	table.Add(key, pg)
 
 	diff := cmp.Diff(table.table, map[string]*Progress{key: pg}, opt1, opt2)
 	if diff != "" {
 		t.Errorf("\n%s", diff)
 	}
-	diff = cmp.Diff(table.keys, []string{"key"})
+	diff = cmp.Diff(table.keys, []string{key})
 	if diff != "" {
 		t.Errorf("\n%s", diff)
 	}
 
+	// Add key2 pg2
+	table.Add(key2, pg2)
+
+	diff = cmp.Diff(table.table, map[string]*Progress{key: pg, key2: pg2}, opt1, opt2)
+	if diff != "" {
+		t.Errorf("\n%s", diff)
+	}
+	diff = cmp.Diff(table.keys, []string{key, key2})
+	if diff != "" {
+		t.Errorf("\n%s", diff)
+	}
+
+	// Delete key pg
 	table.Delete(key)
+
+	diff = cmp.Diff(table.table, map[string]*Progress{key2: pg2}, opt1, opt2)
+	if diff != "" {
+		t.Errorf("\n%s", diff)
+	}
+	diff = cmp.Diff(table.keys, []string{key2})
+	if diff != "" {
+		t.Errorf("\n%s", diff)
+	}
+
+	// Delete key2 pg2
+	table.Delete(key2)
 
 	diff = cmp.Diff(table.table, map[string]*Progress{}, opt1, opt2)
 	if diff != "" {
