@@ -43,7 +43,7 @@ func main() {
 
 	r.DELETE("/downloads/:id", func(c *gin.Context) {
 		id := c.Param("id")
-		downloader.table.Delete(id)
+		downloader.table.Cancel(id)
 
 		c.JSON(http.StatusNoContent, gin.H{})
 	})
