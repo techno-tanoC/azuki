@@ -40,7 +40,7 @@ func (d *Downloader) Download(url string, name string, ext string) error {
 	d.table.Add(uuid, pg)
 	defer d.table.Delete(uuid)
 
-	// Make temp file( defer delete)
+	// Make temp file( defer delete )
 	temp, err := ioutil.TempFile("", "")
 	if err != nil {
 		return err
