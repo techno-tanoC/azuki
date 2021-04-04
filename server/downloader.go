@@ -66,7 +66,7 @@ func (d *Downloader) Download(url string, name string, ext string) error {
 		return err
 	}
 
-	//
+	// Reset tempfile offset
 	_, err = temp.Seek(0, io.SeekStart)
 	if err != nil {
 		return err
