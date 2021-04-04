@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,8 +15,13 @@ type Post struct {
 }
 
 func main() {
+	storage, ok := os.LookupEnv("AZUKI_STORAGE_PATH")
+	if !ok {
+		storage = "."
+	}
+
 	client := NewClient()
-	downloader := NewDownloader(client, ".", 1000, 1000)
+	downloader := NewDownloader(client, storage, 1000, 1000)
 	logger := log.Default()
 
 	r := gin.Default()
