@@ -18,7 +18,7 @@ type Progress struct {
 	name     string
 	total    int64
 	size     int64
-	canceled bool
+	Canceled bool
 }
 
 func NewProgress(name string) *Progress {
@@ -29,7 +29,7 @@ func (pg *Progress) Write(p []byte) (int, error) {
 	pg.mux.Lock()
 	defer pg.mux.Unlock()
 
-	if pg.canceled {
+	if pg.Canceled {
 		return 0, fmt.Errorf("canceled: %s", pg.name)
 	}
 
@@ -53,7 +53,7 @@ func (pg *Progress) Cancel() {
 	pg.mux.Lock()
 	defer pg.mux.Unlock()
 
-	pg.canceled = true
+	pg.Canceled = true
 }
 
 func (pg *Progress) ToItem(key string) Item {
@@ -65,6 +65,6 @@ func (pg *Progress) ToItem(key string) Item {
 		Name:     pg.name,
 		Total:    pg.total,
 		Size:     pg.size,
-		Canceled: pg.canceled,
+		Canceled: pg.Canceled,
 	}
 }

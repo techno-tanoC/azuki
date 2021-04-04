@@ -59,7 +59,7 @@ func TestTableCancel(t *testing.T) {
 	table.Add(key, pg)
 	table.Cancel(key)
 
-	diff := cmp.Diff(pg.canceled, true)
+	diff := cmp.Diff(pg.Canceled, true)
 	if diff != "" {
 		t.Errorf("\n%s", diff)
 	}

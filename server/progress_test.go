@@ -59,14 +59,14 @@ func TestSetTotal(t *testing.T) {
 
 func TestCancel(t *testing.T) {
 	pg := NewProgress("test")
-	diff := cmp.Diff(pg.canceled, false)
+	diff := cmp.Diff(pg.Canceled, false)
 	if diff != "" {
 		t.Errorf("\n%s", diff)
 	}
 
 	pg.Cancel()
 
-	diff = cmp.Diff(pg.canceled, true)
+	diff = cmp.Diff(pg.Canceled, true)
 	if diff != "" {
 		t.Errorf("\n%s", diff)
 	}
