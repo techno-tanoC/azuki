@@ -72,10 +72,12 @@ func (d *Downloader) Download(url string, name string, ext string) error {
 		return err
 	}
 
-	// Copy data from temp file to file
-	err = d.lockCopy.Copy(temp, name, ext)
-	if err != nil {
-		return err
+	// Copy data from temp file to file unless canceled
+	if !pg.Canceled {
+		err = d.lockCopy.Copy(temp, name, ext)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
