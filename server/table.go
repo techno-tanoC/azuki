@@ -32,12 +32,13 @@ func (t *Table) Delete(key string) {
 	if _, present := t.table[key]; present {
 		delete(t.table, key)
 
-		t.keys = []string{}
+		keys := []string{}
 		for _, k := range t.keys {
 			if k != key {
-				t.keys = append(t.keys, k)
+				keys = append(keys, k)
 			}
 		}
+		t.keys = keys
 	}
 }
 
