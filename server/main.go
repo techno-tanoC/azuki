@@ -24,6 +24,7 @@ func main() {
 	downloader := NewDownloader(client, storage, 1000, 1000)
 
 	r := gin.Default()
+	r.Use(cors.Default())
 
 	r.GET("/downloads", func(c *gin.Context) {
 		items := downloader.table.ToItems()
@@ -50,6 +51,5 @@ func main() {
 		c.JSON(http.StatusNoContent, gin.H{})
 	})
 
-	r.Use(cors.Default())
 	r.Run()
 }
