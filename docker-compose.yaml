@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: ./
+      dockerfile: docker/server/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      AZUKI_STORAGE_PATH: /volume
+    volumes:
+      - type: bind
+        source: ./volume
+        target: /volume
