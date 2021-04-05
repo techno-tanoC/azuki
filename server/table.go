@@ -43,8 +43,10 @@ func (t *Table) Delete(key string) {
 }
 
 func (t *Table) Cancel(key string) {
-	t.table[key].Cancel()
-	t.Delete(key)
+	if _, present := t.table[key]; present {
+		t.table[key].Cancel()
+		t.Delete(key)
+	}
 }
 
 func (t *Table) ToItems() []Item {
