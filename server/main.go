@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -49,5 +50,6 @@ func main() {
 		c.JSON(http.StatusNoContent, gin.H{})
 	})
 
+	r.Use(cors.Default())
 	r.Run()
 }
