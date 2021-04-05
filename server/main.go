@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"net/http"
 	"os"
 
@@ -22,7 +21,6 @@ func main() {
 
 	client := NewClient()
 	downloader := NewDownloader(client, storage, 1000, 1000)
-	logger := log.Default()
 
 	r := gin.Default()
 
@@ -38,10 +36,7 @@ func main() {
 		}
 
 		go func() {
-			err := downloader.Download(post.Url, post.Name, post.Ext)
-			if err != nil {
-				logger.Println(err)
-			}
+			downloader.Download(post.Url, post.Name, post.Ext)
 		}()
 
 		c.JSON(http.StatusCreated, gin.H{})
