@@ -29,23 +29,16 @@ func (t *Table) Delete(key string) {
 	t.mux.Lock()
 	defer t.mux.Unlock()
 
-	if _, present := t.table[key]; present {
-		delete(t.table, key)
-
-		keys := []string{}
-		for _, k := range t.keys {
-			if k != key {
-				keys = append(keys, k)
-			}
-		}
-		t.keys = keys
-	}
+	t.delete(key)
 }
 
 func (t *Table) Cancel(key string) {
+	t.mux.Lock()
+	defer t.mux.Unlock()
+
 	if _, present := t.table[key]; present {
 		t.table[key].Cancel()
-		t.Delete(key)
+		t.delete(key)
 	}
 }
 
@@ -59,4 +52,18 @@ func (t *Table) ToItems() []Item {
 		items = append(items, item)
 	}
 	return items
+}
+
+func (t *Table) delete(key string) {
+	if _, present := t.table[key]; present {
+		delete(t.table, key)
+
+		keys := []string{}
+		for _, k := range t.keys {
+			if k != key {
+				keys = append(keys, k)
+			}
+		}
+		t.keys = keys
+	}
 }
