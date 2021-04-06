@@ -1,4 +1,4 @@
-FROM golang:1.16-alpine3.13 AS build
+FROM golang:1.16 AS build
 
 WORKDIR /build
 
@@ -9,11 +9,9 @@ COPY server ./
 RUN CGO_ENABLED=0 go build -a -tags netgo -installsuffix netgo -trimpath -ldflags '-s -w -extldflags "-static"'
 
 
-FROM alpine:3.13
+FROM gcr.io/distroless/static:latest-amd64
 
 WORKDIR /app
-
-RUN apk add --no-cache ca-certificates
 
 COPY --from=build /build/server /app/server
 
