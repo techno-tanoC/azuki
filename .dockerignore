@@ -1,3 +1,7 @@
+# client
+/client/node_modules
+/client/.nuxt
+
 # server
 /server/server
 
