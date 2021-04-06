@@ -1,4 +1,4 @@
-FROM node:15-alpine3.13 AS build
+FROM node:14-alpine3.13 AS build
 
 WORKDIR /app
 
@@ -11,7 +11,7 @@ RUN yarn build
 CMD [ "yarn", "start" ]
 
 
-FROM node:15-alpine3.13
+FROM node:14-alpine3.13
 
 WORKDIR /app
 
