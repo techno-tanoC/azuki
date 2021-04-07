@@ -1,20 +1,18 @@
 import DownloadList from '../components/download_list'
 
 import {useState, useEffect} from 'react'
+import Link from 'next/link'
 
 const fetchDownloads = async () => {
-  const res = await fetch("http://localhost:8080/downloads")
+  const port = localStorage.getItem("port")
+  const res = await fetch(`http://localhost:${port}/downloads`)
   const json = await res.json()
   return json
 }
 
 const deleteItem = (id: string) => {
-  fetch(
-    `http://localhost:8080/downloads/${id}`,
-    {
-      method: "DELETE"
-    }
-  )
+  const port = localStorage.getItem("port")
+  fetch(`http://localhost:${port}/downloads/${id}`, { method: "DELETE" })
 }
 
 export default function Index() {
@@ -25,11 +23,18 @@ export default function Index() {
       const news = await fetchDownloads()
       setDownloads(news)
     }
-    setInterval(f, 1000)
+
     f()
-  }, [setDownloads])
+    const intervalId = setInterval(f, 1000)
+    return () => clearInterval(intervalId)
+  }, [])
 
   return (
-    <DownloadList downloads={downloads} deleteItem={deleteItem} />
+    <div>
+      <DownloadList downloads={downloads} deleteItem={deleteItem} />
+      <Link href="/config">
+        <a>config</a>
+      </Link>
+    </div>
   )
 }
