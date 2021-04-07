@@ -30,11 +30,11 @@ export default function Index() {
   }, [])
 
   return (
-    <>
+    <div>
       <DownloadList downloads={downloads} deleteItem={deleteItem} />
       <Link href="/config">
         <a>config</a>
       </Link>
-    </>
+    </div>
   )
 }
