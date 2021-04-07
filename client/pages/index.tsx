@@ -1,6 +1,7 @@
 import DownloadList from '../components/download_list'
 
 import {useState, useEffect} from 'react'
+import Link from 'next/link'
 
 const fetchDownloads = async () => {
   const port = localStorage.getItem("port")
@@ -28,6 +29,11 @@ export default function Index() {
   }, [])
 
   return (
-    <DownloadList downloads={downloads} deleteItem={deleteItem} />
+    <>
+      <DownloadList downloads={downloads} deleteItem={deleteItem} />
+      <Link href="/config">
+        <a>config</a>
+      </Link>
+    </>
   )
 }
