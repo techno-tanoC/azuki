@@ -24,6 +24,7 @@ export default function Index() {
       setDownloads(news)
     }
 
+    f()
     const intervalId = setInterval(f, 1000)
     return () => clearInterval(intervalId)
   }, [])
