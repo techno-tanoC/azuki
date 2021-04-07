@@ -22,9 +22,10 @@ export default function Index() {
       const news = await fetchDownloads()
       setDownloads(news)
     }
-    setInterval(f, 1000)
-    f()
-  }, [setDownloads])
+
+    const intervalId = setInterval(f, 1000)
+    return () => clearInterval(intervalId)
+  }, [])
 
   return (
     <DownloadList downloads={downloads} deleteItem={deleteItem} />
