@@ -1,4 +1,4 @@
-FROM node:14-alpine3.13 AS build
+FROM node:14 AS build
 
 WORKDIR /app
 
@@ -11,7 +11,7 @@ RUN yarn build
 CMD [ "yarn", "start" ]
 
 
-FROM node:14-alpine3.13
+FROM gcr.io/distroless/nodejs:14
 
 WORKDIR /app
 
@@ -22,4 +22,4 @@ COPY --from=build /app/.next ./.next
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/package.json ./package.json
 
-CMD [ "yarn", "start" ]
+CMD [ "node_modules/.bin/next", "start" ]
