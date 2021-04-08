@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/google/uuid"
+	"golang.org/x/xerrors"
 )
 
 type Downloader struct {
@@ -32,7 +33,7 @@ func (d *Downloader) Download(url string, name string, ext string) error {
 	// Make uuid
 	v4, err := uuid.NewRandom()
 	if err != nil {
-		return err
+		return xerrors.Errorf("failed to generate uuid: %w", err)
 	}
 	uuid := v4.String()
 
@@ -43,14 +44,14 @@ func (d *Downloader) Download(url string, name string, ext string) error {
 	// Make temp file( defer delete )
 	temp, err := ioutil.TempFile("", "")
 	if err != nil {
-		return err
+		return xerrors.Errorf("failed to create temporary file: %w", err)
 	}
 	defer os.Remove(temp.Name())
 
 	// Open http
 	res, err := d.client.Get(url)
 	if err != nil {
-		return err
+		return xerrors.Errorf("failed to get response: %w", err)
 	}
 	defer res.Close()
 
@@ -63,20 +64,20 @@ func (d *Downloader) Download(url string, name string, ext string) error {
 	// Copy data from response to temp file
 	_, err = io.Copy(tempPg, res)
 	if err != nil {
-		return err
+		return xerrors.Errorf("failed to copy data from response to temporary file: %w", err)
 	}
 
 	// Reset tempfile offset
 	_, err = temp.Seek(0, io.SeekStart)
 	if err != nil {
-		return err
+		return xerrors.Errorf("failed to seek temporary file: %w", err)
 	}
 
 	// Copy data from temp file to file unless canceled
 	if !pg.Canceled {
 		err = d.lockCopy.Copy(temp, name, ext)
 		if err != nil {
-			return err
+			return xerrors.Errorf("failed to copy with lock: %w", err)
 		}
 	}
 
