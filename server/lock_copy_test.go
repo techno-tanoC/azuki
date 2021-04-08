@@ -14,7 +14,7 @@ import (
 func TestCopyContents(t *testing.T) {
 	dir, err := ioutil.TempDir("", "azuki_*")
 	if err != nil {
-		t.Fatalf("TestCopyContents error creating temporary dir: %v", err)
+		t.Fatalf("TestCopyContents create temporary dir error: %v", err)
 	}
 	defer os.RemoveAll(dir)
 
@@ -27,7 +27,7 @@ func TestCopyContents(t *testing.T) {
 	// Read copied file
 	contents, err := ioutil.ReadFile(filepath.Join(dir, "azuki.txt"))
 	if err != nil {
-		t.Fatalf("TestCopyContents error reading file: %v", err)
+		t.Fatalf("TestCopyContents read file error: %v", err)
 	}
 
 	diff := cmp.Diff(string(contents), data)
