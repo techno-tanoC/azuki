@@ -12,7 +12,7 @@ func TestNewProgress(t *testing.T) {
 
 	diff := cmp.Diff(pg.name, name)
 	if diff != "" {
-		t.Errorf("TestNewProgress: (-got +want)\n%s", diff)
+		t.Errorf("\n%s", diff)
 	}
 }
 
@@ -22,7 +22,7 @@ func TestWrite(t *testing.T) {
 
 	_, err := pg.Write(bytes)
 	if err != nil {
-		t.Errorf("TestWrite: err %v", err)
+		t.Errorf("TestWrite first error: %v", err)
 	}
 
 	diff := cmp.Diff(pg.size, int64(len(bytes)))
@@ -32,7 +32,7 @@ func TestWrite(t *testing.T) {
 
 	_, err = pg.Write(bytes)
 	if err != nil {
-		t.Errorf("TestWrite: err %v", err)
+		t.Errorf("TestWrite second error: %v", err)
 	}
 
 	diff = cmp.Diff(pg.size, 2*int64(len(bytes)))

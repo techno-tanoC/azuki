@@ -52,14 +52,14 @@ func TestDownload(t *testing.T) {
 
 	temp, err := ioutil.TempDir("", "")
 	if err != nil {
-		t.Fatalf("TestDownload error temporary dir: %v", err)
+		t.Fatalf("TestDownload create temporary dir error: %v", err)
 	}
 
 	client := &TestClient{src}
 	downloader := NewDownloader(client, temp, 1000, 1000)
 	err = downloader.Download("", "test", "txt")
 	if err != nil {
-		t.Fatalf("TestDownload error download: %v", err)
+		t.Fatalf("TestDownload download error: %v", err)
 	}
 
 	srcData, err := ioutil.ReadFile(src)
