@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 
@@ -38,7 +39,10 @@ func main() {
 		}
 
 		go func() {
-			downloader.Download(post.Url, post.Name, post.Ext)
+			err := downloader.Download(post.Url, post.Name, post.Ext)
+			if err != nil {
+				fmt.Printf("%+v\n", err)
+			}
 		}()
 
 		c.JSON(http.StatusCreated, gin.H{})

@@ -6,6 +6,8 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+
+	"golang.org/x/xerrors"
 )
 
 type LockCopy struct {
@@ -31,12 +33,12 @@ func (lc *LockCopy) Copy(r io.Reader, name string, ext string) error {
 
 	f, err := os.Create(fresh)
 	if err != nil {
-		return err
+		return xerrors.Errorf("failed to create file( name: %s, ext: %s ): %w", name, ext, err)
 	}
 
 	_, err = io.Copy(f, r)
 	if err != nil {
-		return err
+		return xerrors.Errorf("failed to copy file( name: %s, ext: %s ): %w", name, ext, err)
 	}
 
 	err = os.Chown(f.Name(), lc.uid, lc.gid)
