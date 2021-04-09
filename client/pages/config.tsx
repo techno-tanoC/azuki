@@ -1,5 +1,6 @@
+import ConfigLink from '../components/text_link'
+
 import {useEffect, useState} from 'react'
-import Link from 'next/link'
 
 export default function Config() {
   const [port, setPort] = useState("")
@@ -27,9 +28,9 @@ export default function Config() {
         </label>
         <input type="submit" value="Submit" />
       </form>
-      <Link href="/">
-        <a>top</a>
-      </Link>
+      <ConfigLink href="/">
+        top
+      </ConfigLink>
     </div>
   )
 }
