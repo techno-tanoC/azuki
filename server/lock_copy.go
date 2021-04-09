@@ -42,7 +42,11 @@ func (lc *LockCopy) Copy(r io.Reader, name string, ext string) error {
 	}
 
 	err = os.Chown(f.Name(), lc.uid, lc.gid)
-	return err
+	if err != nil {
+		return xerrors.Errorf("failed to change owner( name: %s, ext: %s ): %w", name, ext, err)
+	}
+
+	return nil
 }
 
 func (lc *LockCopy) buildFreshName(name string, ext string) string {
