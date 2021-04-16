@@ -5,13 +5,12 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"sync"
+	"strings"
 
 	"golang.org/x/xerrors"
 )
 
 type LockCopy struct {
-	mux sync.Mutex
 	dir string
 	uid int
 	gid int
@@ -26,12 +25,7 @@ func NewLockCopy(dir string, uid int, gid int) *LockCopy {
 }
 
 func (lc *LockCopy) Copy(r io.Reader, name string, ext string) error {
-	lc.mux.Lock()
-	defer lc.mux.Unlock()
-
-	fresh := lc.buildFreshName(name, ext)
-
-	f, err := os.Create(fresh)
+	f, err := createNewFile(lc.dir, sanitize(name), sanitize(ext))
 	if err != nil {
 		return xerrors.Errorf("failed to create file( name: %s, ext: %s ): %w", name, ext, err)
 	}
@@ -49,27 +43,30 @@ func (lc *LockCopy) Copy(r io.Reader, name string, ext string) error {
 	return nil
 }
 
-func (lc *LockCopy) buildFreshName(name string, ext string) string {
-	var (
-		candidate string
-		count     int
-		base      string
-	)
+func createNewFile(dir, name, ext string) (*os.File, error) {
+	count := 0
 
 	for {
+		var base string
 		if count == 0 {
 			base = fmt.Sprintf("%s.%s", name, ext)
 		} else {
 			base = fmt.Sprintf("%s(%d).%s", name, count, ext)
 		}
 
-		candidate = filepath.Join(lc.dir, base)
-		if _, err := os.Stat(candidate); err != nil {
-			break
-		} else {
-			count++
+		path := filepath.Join(dir, base)
+		f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0644)
+		if err == nil {
+			return f, nil
 		}
-	}
+		if !os.IsExist(err) {
+			return nil, xerrors.Errorf("failed to create new file: %w", err)
+		}
 
-	return candidate
+		count += 1
+	}
+}
+
+func sanitize(path string) string {
+	return strings.ReplaceAll(path, "/", "／")
 }
