@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"golang.org/x/xerrors"
 )
@@ -24,7 +25,7 @@ func NewLockCopy(dir string, uid int, gid int) *LockCopy {
 }
 
 func (lc *LockCopy) Copy(r io.Reader, name string, ext string) error {
-	f, err := createNewFile(lc.dir, name, ext)
+	f, err := createNewFile(lc.dir, sanitize(name), sanitize(ext))
 	if err != nil {
 		return xerrors.Errorf("failed to create file( name: %s, ext: %s ): %w", name, ext, err)
 	}
@@ -64,4 +65,8 @@ func createNewFile(dir, name, ext string) (*os.File, error) {
 
 		count += 1
 	}
+}
+
+func sanitize(path string) string {
+	return strings.ReplaceAll(path, "/", "／")
 }
