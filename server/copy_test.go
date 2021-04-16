@@ -39,7 +39,7 @@ func TestCopyContents(t *testing.T) {
 func TestCopyName(t *testing.T) {
 	dir, err := ioutil.TempDir("", "azuki_*")
 	if err != nil {
-		t.Fatalf("TestCopyName: %v", err)
+		t.Fatalf("TestCopyName create temporary dir error: %v", err)
 	}
 	defer os.RemoveAll(dir)
 

@@ -10,19 +10,19 @@ import (
 )
 
 type Downloader struct {
-	client   ClientLike
-	lockCopy *LockCopy
-	table    *Table
+	client ClientLike
+	copy   *Copy
+	table  *Table
 }
 
 func NewDownloader(client ClientLike, dir string, uid int, gid int) *Downloader {
-	lockCopy := NewLockCopy(dir, uid, gid)
+	copy := NewLockCopy(dir, uid, gid)
 	table := NewTable()
 
 	return &Downloader{
-		client:   client,
-		lockCopy: lockCopy,
-		table:    table,
+		client: client,
+		copy:   copy,
+		table:  table,
 	}
 }
 
@@ -75,7 +75,7 @@ func (d *Downloader) Download(url string, name string, ext string) error {
 
 	// Copy data from temp file to file unless canceled
 	if !pg.Canceled {
-		err = d.lockCopy.Copy(temp, name, ext)
+		err = d.copy.Copy(temp, name, ext)
 		if err != nil {
 			return xerrors.Errorf("failed to copy with lock: %w", err)
 		}

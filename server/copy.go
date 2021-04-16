@@ -10,25 +10,26 @@ import (
 	"golang.org/x/xerrors"
 )
 
-type LockCopy struct {
+type Copy struct {
 	dir string
 	uid int
 	gid int
 }
 
-func NewLockCopy(dir string, uid int, gid int) *LockCopy {
-	return &LockCopy{
+func NewLockCopy(dir string, uid int, gid int) *Copy {
+	return &Copy{
 		dir: dir,
 		uid: uid,
 		gid: gid,
 	}
 }
 
-func (lc *LockCopy) Copy(r io.Reader, name string, ext string) error {
+func (lc *Copy) Copy(r io.Reader, name string, ext string) error {
 	f, err := createNewFile(lc.dir, sanitize(name), sanitize(ext))
 	if err != nil {
 		return xerrors.Errorf("failed to create file( name: %s, ext: %s ): %w", name, ext, err)
 	}
+	defer f.Close()
 
 	_, err = io.Copy(f, r)
 	if err != nil {
