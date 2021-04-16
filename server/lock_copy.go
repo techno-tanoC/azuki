@@ -29,6 +29,7 @@ func (lc *LockCopy) Copy(r io.Reader, name string, ext string) error {
 	if err != nil {
 		return xerrors.Errorf("failed to create file( name: %s, ext: %s ): %w", name, ext, err)
 	}
+	defer f.Close()
 
 	_, err = io.Copy(f, r)
 	if err != nil {
