@@ -18,11 +18,11 @@ func TestCopyContents(t *testing.T) {
 	}
 	defer os.RemoveAll(dir)
 
-	lc := NewLockCopy(dir, 1000, 1000)
+	c := NewCopier(dir, 1000, 1000)
 	data := "ハローワールド"
 
 	buf := bytes.NewBuffer([]byte(data))
-	lc.Copy(buf, "azuki", "txt")
+	c.Copy(buf, "azuki", "txt")
 
 	// Read copied file
 	contents, err := ioutil.ReadFile(filepath.Join(dir, "azuki.txt"))
@@ -43,12 +43,12 @@ func TestCopyName(t *testing.T) {
 	}
 	defer os.RemoveAll(dir)
 
-	lc := NewLockCopy(dir, 1000, 1000)
+	c := NewCopier(dir, 1000, 1000)
 
 	buf := bytes.NewBuffer([]byte(""))
-	lc.Copy(buf, "azuki", "txt")
-	lc.Copy(buf, "azuki", "txt")
-	lc.Copy(buf, "azuki", "txt")
+	c.Copy(buf, "azuki", "txt")
+	c.Copy(buf, "azuki", "txt")
+	c.Copy(buf, "azuki", "txt")
 
 	// List copied files
 	fileInfos, err := ioutil.ReadDir(dir)

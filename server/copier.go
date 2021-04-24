@@ -10,22 +10,22 @@ import (
 	"golang.org/x/xerrors"
 )
 
-type Copy struct {
+type Copier struct {
 	dir string
 	uid int
 	gid int
 }
 
-func NewLockCopy(dir string, uid int, gid int) *Copy {
-	return &Copy{
+func NewCopier(dir string, uid int, gid int) *Copier {
+	return &Copier{
 		dir: dir,
 		uid: uid,
 		gid: gid,
 	}
 }
 
-func (lc *Copy) Copy(r io.Reader, name string, ext string) error {
-	f, err := createNewFile(lc.dir, sanitize(name), sanitize(ext))
+func (c *Copier) Copy(r io.Reader, name string, ext string) error {
+	f, err := createNewFile(c.dir, sanitize(name), sanitize(ext))
 	if err != nil {
 		return xerrors.Errorf("failed to create file( name: %s, ext: %s ): %w", name, ext, err)
 	}
@@ -36,7 +36,7 @@ func (lc *Copy) Copy(r io.Reader, name string, ext string) error {
 		return xerrors.Errorf("failed to copy file( name: %s, ext: %s ): %w", name, ext, err)
 	}
 
-	err = os.Chown(f.Name(), lc.uid, lc.gid)
+	err = os.Chown(f.Name(), c.uid, c.gid)
 	if err != nil {
 		return xerrors.Errorf("failed to change owner( name: %s, ext: %s ): %w", name, ext, err)
 	}
