@@ -10,7 +10,7 @@ services:
       - "3000:3000"
 
   server:
-    image: registry.gitlab.com/techno-tanoc/azuki/server:0.1.0
+    image: registry.gitlab.com/techno-tanoc/azuki/server:0.1.1
     build:
       context: ./
       dockerfile: docker/server/Dockerfile
