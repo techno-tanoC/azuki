@@ -1,4 +1,4 @@
-import ConfigLink from '../components/text_link'
+import TextLink from '../components/text_link'
 
 import {useEffect, useState} from 'react'
 
@@ -28,9 +28,9 @@ export default function Config() {
         </label>
         <input type="submit" value="Submit" />
       </form>
-      <ConfigLink href="/">
+      <TextLink href="/">
         top
-      </ConfigLink>
+      </TextLink>
     </div>
   )
 }
