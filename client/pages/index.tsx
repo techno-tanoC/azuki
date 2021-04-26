@@ -1,5 +1,5 @@
 import DownloadList from '../components/download_list'
-import ConfigLink from '../components/text_link'
+import TextLink from '../components/text_link'
 
 import {useState, useEffect} from 'react'
 
@@ -32,9 +32,9 @@ export default function Index() {
   return (
     <div>
       <DownloadList downloads={downloads} deleteItem={deleteItem} />
-      <ConfigLink href="/config">
+      <TextLink href="/config">
         config
-      </ConfigLink>
+      </TextLink>
     </div>
   )
 }
