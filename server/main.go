@@ -34,9 +34,7 @@ func main() {
 
 	r.POST("/downloads", func(c *gin.Context) {
 		var post Post
-		if err := c.ShouldBindJSON(&post); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{})
-		}
+		c.BindJSON(&post)
 
 		go func() {
 			err := downloader.Download(post.Url, post.Name, post.Ext)
