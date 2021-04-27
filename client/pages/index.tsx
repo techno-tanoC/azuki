@@ -11,7 +11,7 @@ const fetchDownloads = async (endpoint: string) => {
 
 const deleteItem = (endpoint: string) => {
   return (id: string) => {
-    const url = new URL(`downloads/${id}`, endpoint).toString()
+    const url = new URL(`/downloads/${id}`, endpoint).toString()
     fetch(url, { method: "DELETE" })
   }
 }
@@ -40,7 +40,7 @@ export default function Index({ endpoint }) {
 export function getServerSideProps() {
   return {
     props: {
-      endpoint: process.env.API_ENDPOINT ?? "http://localhost:8080"
+      endpoint: process.env.API_ENDPOINT ?? "http://localhost:8080/"
     }
   }
 }
