@@ -8,6 +8,8 @@ services:
       dockerfile: docker/client/Dockerfile
     ports:
       - "3000:3000"
+    environment:
+      API_ENDPOINT: http://localhost:8080
 
   server:
     image: registry.gitlab.com/techno-tanoc/azuki/server:0.1.1
