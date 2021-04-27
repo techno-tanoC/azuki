@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   client:
-    image: registry.gitlab.com/techno-tanoc/azuki/client:0.1.0
+    image: registry.gitlab.com/techno-tanoc/azuki/client:0.1.1
     build:
       context: ./
       dockerfile: docker/client/Dockerfile
