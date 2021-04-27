@@ -3,14 +3,16 @@ import DownloadList from '../components/download_list'
 import {useState, useEffect} from 'react'
 
 const fetchDownloads = async (endpoint: string) => {
-  const res = await fetch(`${endpoint}/downloads`)
+  const url = new URL("/downloads", endpoint).toString()
+  const res = await fetch(url)
   const json = await res.json()
   return json
 }
 
 const deleteItem = (endpoint: string) => {
   return (id: string) => {
-    fetch(`${endpoint}/downloads/${id}`, { method: "DELETE" })
+    const url = new URL(`downloads/${id}`, endpoint).toString()
+    fetch(url, { method: "DELETE" })
   }
 }
 
