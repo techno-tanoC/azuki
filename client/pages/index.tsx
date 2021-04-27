@@ -1,26 +1,25 @@
 import DownloadList from '../components/download_list'
-import TextLink from '../components/text_link'
 
 import {useState, useEffect} from 'react'
 
-const fetchDownloads = async () => {
-  const port = localStorage.getItem("port")
-  const res = await fetch(`http://localhost:${port}/downloads`)
+const fetchDownloads = async (endpoint: string) => {
+  const res = await fetch(`${endpoint}/downloads`)
   const json = await res.json()
   return json
 }
 
-const deleteItem = (id: string) => {
-  const port = localStorage.getItem("port")
-  fetch(`http://localhost:${port}/downloads/${id}`, { method: "DELETE" })
+const deleteItem = (endpoint: string) => {
+  return (id: string) => {
+    fetch(`${endpoint}/downloads/${id}`, { method: "DELETE" })
+  }
 }
 
-export default function Index() {
+export default function Index({ endpoint }) {
   const [downloads, setDownloads] = useState([])
 
   useEffect(() => {
     const f = async () => {
-      const news = await fetchDownloads()
+      const news = await fetchDownloads(endpoint)
       setDownloads(news)
     }
 
@@ -31,10 +30,15 @@ export default function Index() {
 
   return (
     <div>
-      <DownloadList downloads={downloads} deleteItem={deleteItem} />
-      <TextLink href="/config">
-        config
-      </TextLink>
+      <DownloadList downloads={downloads} deleteItem={deleteItem(endpoint)} />
     </div>
   )
+}
+
+export function getServerSideProps() {
+  return {
+    props: {
+      endpoint: process.env.API_ENDPOINT ?? "http://localhost:8080"
+    }
+  }
 }
