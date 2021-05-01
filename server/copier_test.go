@@ -12,7 +12,7 @@ import (
 )
 
 func TestCopyContents(t *testing.T) {
-	dir, err := ioutil.TempDir("", "azuki_*")
+	dir, err := os.MkdirTemp("", "azuki_*")
 	if err != nil {
 		t.Fatalf("TestCopyContents create temporary dir error: %v", err)
 	}
@@ -37,7 +37,7 @@ func TestCopyContents(t *testing.T) {
 }
 
 func TestCopyName(t *testing.T) {
-	dir, err := ioutil.TempDir("", "azuki_*")
+	dir, err := os.MkdirTemp("", "azuki_*")
 	if err != nil {
 		t.Fatalf("TestCopyName create temporary dir error: %v", err)
 	}

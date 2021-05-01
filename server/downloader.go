@@ -2,7 +2,6 @@ package main
 
 import (
 	"io"
-	"io/ioutil"
 	"os"
 
 	"github.com/google/uuid"
@@ -42,7 +41,7 @@ func (d *Downloader) Download(url string, name string, ext string) error {
 	defer d.table.Delete(uuid)
 
 	// Make temp file( defer delete )
-	temp, err := ioutil.TempFile("", "")
+	temp, err := os.CreateTemp("", "")
 	if err != nil {
 		return xerrors.Errorf("failed to create temporary file: %w", err)
 	}
