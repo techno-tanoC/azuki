@@ -2,7 +2,6 @@ version: '3.8'
 
 services:
   client:
-    image: registry.gitlab.com/techno-tanoc/azuki/client:0.1.2
     build:
       context: ./
       dockerfile: docker/client/Dockerfile
@@ -12,7 +11,6 @@ services:
       API_ENDPOINT: http://localhost:8080
 
   server:
-    image: registry.gitlab.com/techno-tanoc/azuki/server:0.1.2
     build:
       context: ./
       dockerfile: docker/server/Dockerfile
