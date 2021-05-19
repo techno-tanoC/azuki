@@ -1,5 +1,4 @@
 FROM node:14 AS build
-
 WORKDIR /app
 
 COPY client/package.json client/yarn.lock ./
@@ -8,11 +7,8 @@ RUN yarn install --frozen-lockfile
 COPY client ./
 RUN yarn build
 
-CMD [ "yarn", "start" ]
-
 
 FROM gcr.io/distroless/nodejs:14
-
 WORKDIR /app
 
 ENV NODE_ENV production
