@@ -50,7 +50,7 @@ func (t *TestResponse) ContentLength() int64 {
 func TestDownload(t *testing.T) {
 	src := "go.sum"
 
-	temp, err := ioutil.TempDir("", "")
+	temp, err := os.MkdirTemp("", "")
 	if err != nil {
 		t.Fatalf("TestDownload create temporary dir error: %v", err)
 	}
