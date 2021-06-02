@@ -1,0 +1,14 @@
+version: 2
+updates:
+- package-ecosystem: gomod
+  directory: "/server"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  rebase-strategy: disabled
+- package-ecosystem: npm
+  directory: "/client"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  rebase-strategy: disabled
