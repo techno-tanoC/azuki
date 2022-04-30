@@ -1,9 +1,8 @@
 package main
 
 import (
+	"fmt"
 	"sync"
-
-	"golang.org/x/xerrors"
 )
 
 type Item struct {
@@ -31,7 +30,7 @@ func (pg *Progress) Write(p []byte) (int, error) {
 	defer pg.mux.Unlock()
 
 	if pg.Canceled {
-		return 0, xerrors.Errorf("canceled downloading %s", pg.name)
+		return 0, fmt.Errorf("canceled downloading %s", pg.name)
 	}
 
 	n := len(p)
