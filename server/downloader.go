@@ -79,7 +79,7 @@ func (d *Downloader) Download(url string, name string, ext string) error {
 	// Copy data from temp file to file unless canceled
 	err = d.copier.Copy(temp, name, ext)
 	if err != nil {
-		return fmt.Errorf("failed to copy with lock: %w", err)
+		return fmt.Errorf("failed to copy: %w", err)
 	}
 
 	return nil
