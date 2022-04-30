@@ -63,9 +63,15 @@ func TestDownload(t *testing.T) {
 	}
 
 	srcData, err := ioutil.ReadFile(src)
+	if err != nil {
+		t.Fatalf("TestDownload src read file error: %v", err)
+	}
 
 	dest := filepath.Join(temp, "test.txt")
 	destData, err := ioutil.ReadFile(dest)
+	if err != nil {
+		t.Fatalf("TestDownload dest read file error: %v", err)
+	}
 
 	diff := cmp.Diff(string(srcData), string(destData))
 	if diff != "" {

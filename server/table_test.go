@@ -19,7 +19,11 @@ func TestNewTable(t *testing.T) {
 	if diff != "" {
 		t.Errorf("\n%s", diff)
 	}
+
 	diff = cmp.Diff(table.keys, []string{})
+	if diff != "" {
+		t.Errorf("\n%s", diff)
+	}
 }
 
 func TestAddDelete(t *testing.T) {
