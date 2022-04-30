@@ -4,7 +4,9 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/user"
 	"path/filepath"
+	"strconv"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -56,8 +58,21 @@ func TestDownload(t *testing.T) {
 	}
 	defer os.RemoveAll(temp)
 
+	user, err := user.Current()
+	if err != nil {
+		t.Fatalf("TestDownload current user error: %v", err)
+	}
+	uid, err := strconv.Atoi(user.Uid)
+	if err != nil {
+		t.Fatalf("TestDownload user id error: %v", err)
+	}
+	gid, err := strconv.Atoi(user.Gid)
+	if err != nil {
+		t.Fatalf("TestDownload current user error: %v", err)
+	}
+
 	client := &TestClient{src}
-	downloader := NewDownloader(client, temp, 1000, 1000)
+	downloader := NewDownloader(client, temp, uid, gid)
 	err = downloader.Download("", "test", "txt")
 	if err != nil {
 		t.Fatalf("TestDownload download error: %v", err)
