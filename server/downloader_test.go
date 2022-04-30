@@ -54,6 +54,7 @@ func TestDownload(t *testing.T) {
 	if err != nil {
 		t.Fatalf("TestDownload create temporary dir error: %v", err)
 	}
+	defer os.RemoveAll(temp)
 
 	client := &TestClient{src}
 	downloader := NewDownloader(client, temp, 1000, 1000)
