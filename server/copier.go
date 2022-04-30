@@ -6,8 +6,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-
-	"golang.org/x/xerrors"
 )
 
 type Copier struct {
@@ -27,18 +25,18 @@ func NewCopier(dir string, uid int, gid int) *Copier {
 func (c *Copier) Copy(r io.Reader, name string, ext string) error {
 	f, err := createNewFile(c.dir, sanitize(name), sanitize(ext))
 	if err != nil {
-		return xerrors.Errorf("failed to create file( name: %s, ext: %s ): %w", name, ext, err)
+		return fmt.Errorf("failed to create file( name: %s, ext: %s ): %w", name, ext, err)
 	}
 	defer f.Close()
 
 	_, err = io.Copy(f, r)
 	if err != nil {
-		return xerrors.Errorf("failed to copy file( name: %s, ext: %s ): %w", name, ext, err)
+		return fmt.Errorf("failed to copy file( name: %s, ext: %s ): %w", name, ext, err)
 	}
 
 	err = os.Chown(f.Name(), c.uid, c.gid)
 	if err != nil {
-		return xerrors.Errorf("failed to change owner( name: %s, ext: %s ): %w", name, ext, err)
+		return fmt.Errorf("failed to change owner( name: %s, ext: %s ): %w", name, ext, err)
 	}
 
 	return nil
@@ -61,7 +59,7 @@ func createNewFile(dir, name, ext string) (*os.File, error) {
 			return f, nil
 		}
 		if !os.IsExist(err) {
-			return nil, xerrors.Errorf("failed to create new file: %w", err)
+			return nil, fmt.Errorf("failed to create new file: %w", err)
 		}
 
 		count += 1
