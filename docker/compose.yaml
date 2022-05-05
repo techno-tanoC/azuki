@@ -1,0 +1,14 @@
+services:
+  app:
+    image: registry.gitlab.com/techno-tanoc/azuki:0.2.0
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    environment:
+      AZUKI_STORAGE_PATH: /volume
+    ports:
+      - "9090:8080"
+    volumes:
+      - type: bind
+        source: ./volume
+        target: /volume
