@@ -1,9 +1,11 @@
 # client
 /client/node_modules
-/client/.nuxt
+/client/.parcel-cache
 
 # server
+/server/assets
 /server/server
+/server/tmp
 
 # docker
 /volume
