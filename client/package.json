@@ -1,21 +1,18 @@
 {
   "name": "client",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "license": "MIT",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "start": "parcel watch index.html --public-url /assets/ --dist-dir ../server/assets/ --no-hmr",
+    "build": "parcel build index.html --public-url /assets/"
   },
   "dependencies": {
     "modern-css-reset": "^1.4.0",
-    "next": "^10.2.3",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "parcel": "^2.5.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
   },
   "devDependencies": {
-    "@types/node": "^16.4.1",
-    "@types/react": "^17.0.14",
-    "sass": "^1.35.2",
-    "typescript": "^4.3.2"
+    "@parcel/transformer-sass": "2.5.0"
   }
 }
