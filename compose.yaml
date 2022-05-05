@@ -5,8 +5,7 @@ services:
     build:
       context: ./
       dockerfile: docker/client/Dockerfile
-    command: sleep infinity
-    init: true
+    command: ["sleep", "infinity"]
     volumes:
       - .:/workspace:cached
 
@@ -14,8 +13,7 @@ services:
     build:
       context: ./
       dockerfile: docker/server/Dockerfile
-    command: sleep infinity
-    init: true
+    command: ["sleep", "infinity"]
     ports:
       - "8080:8080"
     volumes:
