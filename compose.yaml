@@ -5,20 +5,16 @@ services:
     build:
       context: ./
       dockerfile: docker/client/Dockerfile
-    ports:
-      - "3000:3000"
-    environment:
-      API_ENDPOINT: http://localhost:8080
+    command: sleep infinity
+    volumes:
+      - .:/workspace:cached
 
   server:
     build:
       context: ./
       dockerfile: docker/server/Dockerfile
+    command: sleep infinity
     ports:
       - "8080:8080"
-    environment:
-      AZUKI_STORAGE_PATH: /volume
     volumes:
-      - type: bind
-        source: ./volume
-        target: /volume
+      - .:/workspace:cached
