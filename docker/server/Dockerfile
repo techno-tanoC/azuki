@@ -1,16 +1,5 @@
-FROM golang:1.16 AS build
-WORKDIR /build
+# syntax=docker/dockerfile:1.4
+FROM golang:1.18.1
+WORKDIR /workspace
 
-COPY server/go.mod server/go.sum ./
-RUN go mod download
-
-COPY server ./
-RUN CGO_ENABLED=0 go build -trimpath -ldflags "-s -w -buildid="
-
-
-FROM gcr.io/distroless/static:latest
-WORKDIR /app
-
-COPY --from=build /build/server /app/server
-
-CMD [ "/app/server" ]
+RUN go install github.com/cosmtrek/air@latest
