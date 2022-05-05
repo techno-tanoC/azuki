@@ -1,13 +1,19 @@
 package main
 
 import (
+	"embed"
 	"fmt"
+	"io/fs"
+	"log"
 	"net/http"
 	"os"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
+
+//go:embed assets
+var assets embed.FS
 
 type Post struct {
 	Url  string `json:"url"`
@@ -21,11 +27,17 @@ func main() {
 		storage = "."
 	}
 
+	sub, err := fs.Sub(assets, "assets")
+	if err != nil {
+		log.Panicln("assets error")
+	}
+
 	client := NewClient()
 	downloader := NewDownloader(client, storage, 1000, 1000)
 
 	r := gin.Default()
 	r.Use(cors.Default())
+	r.StaticFS("/assets/", http.FS(sub))
 
 	r.GET("/downloads", func(c *gin.Context) {
 		items := downloader.table.ToItems()
