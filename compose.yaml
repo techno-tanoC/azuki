@@ -6,6 +6,7 @@ services:
       context: ./
       dockerfile: docker/client/Dockerfile
     command: sleep infinity
+    init: true
     volumes:
       - .:/workspace:cached
 
@@ -14,6 +15,7 @@ services:
       context: ./
       dockerfile: docker/server/Dockerfile
     command: sleep infinity
+    init: true
     ports:
       - "8080:8080"
     volumes:
