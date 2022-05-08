@@ -1,6 +1,6 @@
 services:
   app:
-    image: registry.gitlab.com/techno-tanoc/azuki:0.2.0
+    image: registry.gitlab.com/techno-tanoc/azuki:0.3.0
     build:
       context: ../
       dockerfile: docker/Dockerfile
